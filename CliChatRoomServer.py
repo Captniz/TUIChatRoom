@@ -8,7 +8,7 @@ import time
 
 HEADER_SIZE = 64
 DECODER = "utf-8"
-SERVER = "25.40.81.143"
+SERVER = "192.168.178.44"
 
 def SendToAll(clients,msg,username,activeClient):
     for client in clients:

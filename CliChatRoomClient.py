@@ -35,7 +35,10 @@ def SendMsg(client,username):
 
 if __name__ == '__main__':
     client=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect((socket.gethostname(), 5000))
+    ip=input("ip:")
+    ip.strip()
+    print(ip)
+    client.connect((ip, 5000))
     client.setblocking(1)
 
     username = input('Username: ')
