@@ -6,6 +6,7 @@ from sqlite3 import connect
 import threading
 import time
 import sys
+import curses
 
 HEADER_SIZE = 64
 DECODER = "utf-8"
