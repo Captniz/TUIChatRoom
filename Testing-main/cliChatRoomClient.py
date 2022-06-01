@@ -1,5 +1,7 @@
 #TODO:
 #fixxa ip
+#aggiungi history dei server
+#aggiungi history messaggi
 from pydoc import cli
 import socket
 from sqlite3 import connect

@@ -12,3 +12,8 @@ Link utili / port forwarding (connessione remota):
 Programma di port forwarding: https://gist.github.com/WangYihang/e7d36b744557e4673d2157499f6c6b5e
 Tutorial port forwarding: https://www.youtube.com/watch?v=N8f5zv9UUMI&ab_channel=HusseinNasser
 port forwarding wikipedia: https://en.wikipedia.org/wiki/Port_forwarding
+
+curses:  
+documentazione: https://docs.python.org/3.5/howto/curses.html  
+tutorial: https://www.youtube.com/watch?v=Db4oc8qc9RU  
+steckoverflow: https://stackoverflow.com/questions/39000250/how-to-display-two-different-outputs-in-python-console

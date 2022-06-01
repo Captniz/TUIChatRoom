@@ -1,6 +1,7 @@
 #TODO:
 #fai si che il server non scoppi quando escidal client esce in modo fornzato o meno
 #per renderlo disponibile da remoto usare il port forwarding
+#aggiungi history messaggi
 from pydoc import cli
 import socket
 from sqlite3 import connect
