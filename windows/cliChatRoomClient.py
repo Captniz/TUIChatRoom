@@ -1,5 +1,7 @@
 #TODO:
 #fixxa ip
+#aggiungi history dei server
+#aggiungi history messaggi
 from pydoc import cli
 import socket
 from sqlite3 import connect
@@ -7,6 +9,7 @@ import threading
 import time
 import sys
 import curses
+from curses import wrapper
 
 HEADER_SIZE = 64
 DECODER = "utf-8"
