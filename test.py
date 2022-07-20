@@ -1,6 +1,8 @@
-from ctypes import sizeof
+import curses
+import socket
+import time
 
-b = 1
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.connect(("192.168.178.44", 5678))
 
-a = sizeof(b)
-print(f'{a}')
+print('yay')
