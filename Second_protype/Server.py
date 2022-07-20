@@ -1,5 +1,4 @@
 import socket
-from sqlite3 import connect
 import threading
 
 #region [rgba(255,255,255,0.05)]
