@@ -1,6 +1,0 @@
----
-driver=<class 'textual.drivers.linux_driver.LinuxDriver'>
-Mount() >>> CalculatorApp(title='Calculator Test')
-Mount() >>> DockView(name='DockView#1')
-Mount() >>> Calculator(name='Calculator#1')
-Mount() >>> Calculator(name='Calculator#1')

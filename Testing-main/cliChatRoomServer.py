@@ -47,7 +47,7 @@ def HandleConnections(s,clients):
 
 if __name__ == '__main__':
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind((socket.gethostname(), 5000))
+    s.bind((socket.gethostbyname('localhost'), 5000))
     s.listen(20)
     print(f'Server started on {SERVER}')
 
