@@ -1,3 +1,5 @@
+# This is a WIP about a terminal application that provides a simple chat room. It was originally meant to share short messages in LAN without needing a internet connection
+
 ho sonno ci penso domani
 
 link utili:
