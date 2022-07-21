@@ -28,3 +28,4 @@ TUI: https://github.com/Textualize/textual
 #aggiungi history dei server
 #aggiungi history messaggi
 #per renderlo disponibile da remoto usare il port forwarding
+#metti automaticamente la finestra client full screen
