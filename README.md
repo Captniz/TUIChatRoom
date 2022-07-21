@@ -24,3 +24,7 @@ RICH TEXT LIB: https://github.com/Textualize/rich
 
 Textualize:  
 TUI: https://github.com/Textualize/textual
+
+#aggiungi history dei server
+#aggiungi history messaggi
+#per renderlo disponibile da remoto usare il port forwarding
