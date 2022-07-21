@@ -13,7 +13,7 @@ HEADER = 64                                                 #Set a header size f
 CLIENT = socket.gethostbyname(socket.gethostname())         #Get host ip
 PORT = 5678                                                 #Set a port
 DECODER = 'utf-8'                                           #Set a decodder
-DC_WORD =  '%quit%'                                         #Set a password to quit
+DC_WORD = '%quit%'                                         #Set a password to quit
 
 #endregion
 
@@ -21,7 +21,6 @@ DC_WORD =  '%quit%'                                         #Set a password to q
 #FUNCTIONS
 
 def Connect(stdscr,server):
-
     connected=False
     while connected==False:                                         #While not connected
         stdscr.clear()
@@ -59,14 +58,44 @@ def Connect(stdscr,server):
     stdscr.clear()
     stdscr.addstr(f'Registered succesfully as {username}')          #Print connection succesfull
     stdscr.refresh()
-    stdscr.getch() 
     boxes = DrawTui(stdscr)                                         #Draw the test user interface
+    threading.Thread(target=Recieve, args=(server,boxes[0])).start()#Start the recieve thread
+    Send(stdscr,server,boxes[1],boxes[2])                           #Start the send thread
 
-def Recieve():
-    pass
+def RecieveMessage(server):
+    len = int(server.recv(HEADER).decode(DECODER))                  #Clean the header message 
+    msg = server.recv(len).decode(DECODER)                          #Recieve the message
+    return msg                                                      #Return the message
 
-def Send():
-    pass
+
+def Recieve(server,pad):
+    offset = 0
+    temp = 0
+    while True:
+        msg = RecieveMessage(server)                                #Recieve the message
+        pad.addstr(msg)                                             #Add the message to the pad
+        if temp>33:                                                 #If the pad is full
+            offset+=1                                               #Increase the offset
+        else:
+            temp+=1                                                 #Increase the temp
+        refreshpad(pad,offset)                                      #Refresh the pad                               
+        stdscr.refresh()
+        
+
+def Send(stdscr,server,box,win):
+    while True:
+        win.clear()
+        box.edit()
+        stdscr.refresh()
+        message = box.gather()                                      #Get message                                        
+        message = str(message)
+        if message == DC_WORD:                                      #If the message is the password to quit
+            server.send(bytes(f'{len(message):<{HEADER}}', DECODER))
+            server.send(bytes(message, DECODER))
+            exit(1)                                                 #Quit the program
+        else:
+            server.send(bytes(f'{len(message):<{HEADER}}', DECODER))
+            server.send(bytes(message, DECODER))
 
 def main(stdscr,server):
     Connect(stdscr,server)
@@ -74,22 +103,17 @@ def main(stdscr,server):
 def DrawTui(stdscr):
     stdscr.clear()                                                  #Clear the screen                            
     rectangle(stdscr,0,0,35,150)                                    #Draw a rectangle for the message incoming
-    #!pad = curses.newpad(500, 148)
+    pad = curses.newpad(500, 148)
     rectangle(stdscr,36,0,45,150)                                   #Draw a rectangle for the message outgoing
-    #!win = curses.newwin(148, 8, 37, 1)                            
-    #!box = Textbox(win)                                            #!TODO curses error when creating the window, porbably due to a mistake in the coordinates written to create it
-    #!box.edit()
-
+    win = curses.newwin(8, 148, 37, 1)                            
+    box = Textbox(win)                                            
     stdscr.refresh()
-    #! test
-    stdscr.getch()
-    #! test
-    #!refreshpad(pad)
+    refreshpad(pad,0)
 
-    #!return (pad, box)
+    return (pad, box, win)
 
-def refreshpad(pad):
-    pad.refresh(0,0,1,1,34,149)
+def refreshpad(pad, offset):
+    pad.refresh((0+offset),0,1,1,34,149)
 
 #endregion
 

@@ -19,13 +19,20 @@ CLIENTS = []
 def ShareMsg(msg):
     print(msg)                                                  #Print the message
     for client in CLIENTS:                                      #Send the message to all clients
-        client.send(bytes(f'{len(msg):<{HEADER}}', DECODER))    #Send the header
-        client.send(bytes(msg, DECODER))                        #Send the message
+        try:
+            client.send(bytes(f'{len(msg):<{HEADER}}', DECODER))    #Send the header
+            client.send(bytes(msg, DECODER))                        #Send the message
+        except:
+            client.close()                                        #Close the client
+            CLIENTS.remove(client)                                #Remove the client from the list of clients
 
 def RecieveMessage(client):
-    len = int(client.recv(HEADER).decode(DECODER))      #Clean the header message 
-    msg = client.recv(len).decode(DECODER)              #Recieve the message
-    return msg                                          #Return the message
+    try:
+        len = int(client.recv(HEADER).decode(DECODER))      #Clean the header message 
+        msg = client.recv(len).decode(DECODER)              #Recieve the message
+        return msg                                          #Return the message
+    except:
+        return DC_WORD                                      #Return the disconnect word
 
 def Start(s):
     s.listen()                                                                  #Listen for connections
@@ -38,7 +45,7 @@ def Start(s):
 def HandleClient(client,addr):
     CLIENTS.append(client)                                                                      #Add the client to the list of clients         
     username = RecieveMessage(client)                                                           #Recieve the username
-    ShareMsg(f'[SERVER]: Succesfully accepted connection from {addr}; username: {username}')    #Share the login message
+    ShareMsg(f'[SERVER]: Succesfully accepted connection from {addr}; username: {username}\n')    #Share the login message
    
     connected = True                                                                            #Set the connected variable to true         
     while connected == True:                                                                    #Loop for the client                
@@ -47,9 +54,8 @@ def HandleClient(client,addr):
             ShareMsg(f'({username}): {msg}')                                                    #Share the message
         else:                                                                                   #If the message is the quit word               
             connected=False                                                                     #Set the connected variable to false             
-            ShareMsg(f'[SERVER]: User {username}: {addr} disconnected')                         #Share the disconnect message
-    client.close()                                                                              #Close the client
-    CLIENTS.remove(client)                                                                      #Remove the client from the list of clients
+            ShareMsg(f'[SERVER]: User {username}: {addr} disconnected\n')                       #Share the disconnect message
+    client.close()                                                                              #Close the client                                                                    #Remove the client from the list of clients
 
 #endregion
 
