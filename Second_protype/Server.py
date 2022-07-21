@@ -23,7 +23,6 @@ def ShareMsg(msg):
         client.send(bytes(msg, DECODER))                        #Send the message
 
 def RecieveMessage(client):
-    client.recv(HEADER)                                 #Recieve the header
     len = int(client.recv(HEADER).decode(DECODER))      #Clean the header message 
     msg = client.recv(len).decode(DECODER)              #Recieve the message
     return msg                                          #Return the message

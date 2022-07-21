@@ -1,6 +1,7 @@
+from cmath import rect
 import curses
 from curses import wrapper
-from curses.textpad import Textbox
+from curses.textpad import Textbox, rectangle
 import socket
 import threading
 from wsgiref.simple_server import server_version
@@ -24,14 +25,14 @@ def Connect(stdscr,server):
     connected=False
     while connected==False:                                         #While not connected
         stdscr.clear()
-        stdscr.addstr("Server ip:")
+        stdscr.addstr("(TO EXECUTE THIS PROGRAM IS IMPORTANT TO PUT THIS WINDOW FULL SCREEN) Server ip: ")
         stdscr.refresh()                                            #Ask for ip
-        win = curses.newwin(1, 30 , 0, 10)                          #Create a new window textbox to write ip
+        win = curses.newwin(2, 30, 1, 0)                            #Create a new window textbox to write ip
         box = Textbox(win)
         box.edit()
         stdscr.refresh()
         ip = box.gather()                                           #Get server ip    
-        ip.strip()                                                  #Clean the ip                        
+        ip = str(ip).strip()                                        #Clean the ip                        
         try:
             server.connect((ip, PORT))                              #Try to connect to the server
             stdscr.clear()
@@ -46,14 +47,20 @@ def Connect(stdscr,server):
     
     stdscr.clear()
     stdscr.addstr("Username:")
-    stdscr.refresh()                                            #Ask for username
-    win = curses.newwin(1, 30 , 0, 10)                          #Create a new window textbox to write username
+    stdscr.refresh()                                                #Ask for username
+    win = curses.newwin(1, 30 , 0, 10)                              #Create a new window textbox to write username
     box = Textbox(win)
     box.edit()
     stdscr.refresh()
-    username = box.gather()                                      #Get username  
-    server.send(bytes(f'{len(username):<{HEADER}}', DECODER))    #Send the header
-    server.send(bytes(username, DECODER))                        #Send the username
+    username = box.gather()                                         #Get username  
+    username = str(username).strip() 
+    server.send(bytes(f'{len(username):<{HEADER}}', DECODER))       #Send the header
+    server.send(bytes(username, DECODER))                           #Send the username
+    stdscr.clear()
+    stdscr.addstr(f'Registered succesfully as {username}')          #Print connection succesfull
+    stdscr.refresh()
+    stdscr.getch() 
+    boxes = DrawTui(stdscr)                                         #Draw the test user interface
 
 def Recieve():
     pass
@@ -64,11 +71,29 @@ def Send():
 def main(stdscr,server):
     Connect(stdscr,server)
 
+def DrawTui(stdscr):
+    stdscr.clear()                                                  #Clear the screen                            
+    rectangle(stdscr,0,0,35,150)                                    #Draw a rectangle for the message incoming
+    #!pad = curses.newpad(500, 148)
+    rectangle(stdscr,36,0,45,150)                                   #Draw a rectangle for the message outgoing
+    #!win = curses.newwin(148, 8, 37, 1)                            
+    #!box = Textbox(win)                                            #!TODO curses error when creating the window, porbably due to a mistake in the coordinates written to create it
+    #!box.edit()
+
+    stdscr.refresh()
+    #! test
+    stdscr.getch()
+    #! test
+    #!refreshpad(pad)
+
+    #!return (pad, box)
+
+def refreshpad(pad):
+    pad.refresh(0,0,1,1,34,149)
 
 #endregion
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #Create a socket
 stdscr = curses.initscr()
+curses.noecho()
 main(stdscr,server)
-
-#WHY DOES CURSES WRITE ON THE SCREEN DOUBLE THE LETTERS I TYPE!!?!
