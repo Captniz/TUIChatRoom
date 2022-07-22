@@ -16,10 +16,12 @@ CLIENTS = []
 #region [rgba(255,255,255,0.05)]
 #FUNCTIONS
 
-def ShareMsg(msg):
+def ShareMsg(msg):                                              
+    msg = msg.replace('\n', '')                                                                 #Replace the newline with a space
+    msg = msg + '\n'
     print(msg)                                                                                  #Print the message
     for client in CLIENTS:                                                                      #Send the message to all clients
-        try:                                                                                    #Check for forced disconnection                 
+        try:
             client.send(bytes(f'{len(msg):<{HEADER}}', DECODER))                                #Send the header
             client.send(bytes(msg, DECODER))                                                    #Send the message
         except:
