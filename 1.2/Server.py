@@ -17,14 +17,14 @@ CLIENTS = []
 #FUNCTIONS
 
 def ShareMsg(msg):                                              
-    msg = msg.replace('\n', '')                                                                 #Replace the newline with a space
-    msg = msg + '\n'
+    msg = msg.replace('\n', '')                                                                 #Clean the message from newlines
+    msg = msg + '\n'                                                                            #Add a newline at the end of the message             
     print(msg)                                                                                  #Print the message
     for client in CLIENTS:                                                                      #Send the message to all clients
         try:
             client.send(bytes(f'{len(msg):<{HEADER}}', DECODER))                                #Send the header
             client.send(bytes(msg, DECODER))                                                    #Send the message
-        except:
+        except:                                                                                 #If the client is disconnected
             client.close()                                                                      #Close the client
             CLIENTS.remove(client)                                                              #Remove the client from the list of clients
 
