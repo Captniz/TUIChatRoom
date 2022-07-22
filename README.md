@@ -29,3 +29,4 @@ TUI: https://github.com/Textualize/textual
 #aggiungi history messaggi  
 #per renderlo disponibile da remoto usare il port forwarding  
 #metti automaticamente la finestra client full screen  
+#make a function to ask things with curses
