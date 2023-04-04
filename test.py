@@ -6,5 +6,6 @@ import json
 import os
 
 import os
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.join(os.path.dirname(
+    os.path.abspath(__file__)), 'servers.json')
 print(BASE_DIR)
